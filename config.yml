@@ -1,0 +1,5 @@
+log:
+  path: "/home/k8pl3r/Documents/GitHub/Snack_Overflow/debug.log"
+  mode: ["file", "stream", "journal"]
+  logger: {}
+  level: "DEBUG"

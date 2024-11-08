@@ -1,32 +1,38 @@
 # kitchen.py
 import asyncio
+from utils.log import Log
 
-SODA_LOCK = asyncio.Lock()
-BURGER_SEM = asyncio.Semaphore(3)  # max 3 burgers at a time
-FRIES_COUNTER = 0
-FRIES_LOCK = asyncio.Lock()
 
 class Kitchen:
+    def __init__(self, config: dict):
+        self.SODA_LOCK = asyncio.Lock()
+        self.BURGER_LOCK = asyncio.Semaphore(3)
+        self.FRIES_LOCK = asyncio.Lock()
+        self.FRIES_COUNTER = 0
+        self.log = Log("Kitchen", config)
+
     async def get_soda(self):
-        async with SODA_LOCK:
-            print("    > Filling the soda")
+        async with self.SODA_LOCK:
+            self.log.info(f"    > Filling the soda")
             await asyncio.sleep(1)
-            print("    < Soda is ready")
+            self.log.info(f"    < Soda is ready")
+
 
     async def get_burger(self):
-        async with BURGER_SEM:
-            print("    > Burger ordered in kitchen")
+
+        async with self.BURGER_LOCK:
+            self.log.info(f"    > Burger ordered in kitchen")
+            print("")
             await asyncio.sleep(3)
             print("    < Burger is ready")
 
     async def get_fries(self):
-        global FRIES_COUNTER
-        async with FRIES_LOCK:
+        async with self.FRIES_LOCK:
             print("    > Getting fries")
-            if FRIES_COUNTER == 0:
+            if self.FRIES_COUNTER == 0:
                 print("   ** Starting fry cooking")
                 await asyncio.sleep(4)
-                FRIES_COUNTER = 5
+                self.FRIES_COUNTER = 5
                 print("   ** Fries are cooked")
-            FRIES_COUNTER -= 1
+            self.FRIES_COUNTER -= 1
             print("    < Fries are ready")

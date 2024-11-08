@@ -46,6 +46,5 @@ class TestRestaurant(unittest.IsolatedAsyncioTestCase):
         self.restaurant.kitchen.get_fries.assert_not_awaited()
 
 
-# Run the tests if this script is executed directly
 if __name__ == "__main__":
     unittest.main()
