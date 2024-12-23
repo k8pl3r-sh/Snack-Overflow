@@ -3,8 +3,8 @@ import asyncio
 from src.kitchen import Kitchen
 
 class Restaurant:
-    def __init__(self):
-        self.kitchen = Kitchen()
+    def __init__(self, config: dict):
+        self.kitchen = Kitchen(config)
 
     async def serve_order(self, customer_name, order):
         print(f"{customer_name} has ordered: {order}")
